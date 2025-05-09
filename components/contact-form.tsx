@@ -10,11 +10,6 @@ export default function ContactForm() {
   const formRef = useRef<HTMLFormElement>(null);
   const { toast } = useToast()
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [emailjsConfig, setEmailjsConfig] = useState({
-    serviceId: '',
-    templateId: '',
-    publicKey: ''
-  });
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -22,14 +17,21 @@ export default function ContactForm() {
     message: "",
   })
 
-  // Load environment variables on component mount
+  // Get environment variables directly on usage rather than storing in state
+  const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+  const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+  const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
   useEffect(() => {
-    setEmailjsConfig({
-      serviceId: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || '',
-      templateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || '',
-      publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || ''
-    });
-  }, []);
+    // Log environment variables on mount for debugging (only in development)
+    if (process.env.NODE_ENV === 'development') {
+      console.log('EmailJS Config:', {
+        serviceId: serviceId ? '✅ Set' : '❌ Missing',
+        templateId: templateId ? '✅ Set' : '❌ Missing',
+        publicKey: publicKey ? '✅ Set' : '❌ Missing'
+      });
+    }
+  }, [serviceId, templateId, publicKey]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target
@@ -61,17 +63,17 @@ export default function ContactForm() {
       return
     }
 
-    // Check if EmailJS config is loaded
-    if (!emailjsConfig.serviceId || !emailjsConfig.templateId || !emailjsConfig.publicKey) {
+    // Check if EmailJS config is available
+    if (!serviceId || !templateId || !publicKey) {
       toast({
         title: "Configuration error",
         description: "Email service not properly configured. Please try again later.",
         variant: "destructive",
       })
       console.error("EmailJS config missing:", {
-        hasServiceId: Boolean(emailjsConfig.serviceId),
-        hasTemplateId: Boolean(emailjsConfig.templateId),
-        hasPublicKey: Boolean(emailjsConfig.publicKey),
+        hasServiceId: Boolean(serviceId),
+        hasTemplateId: Boolean(templateId),
+        hasPublicKey: Boolean(publicKey),
       });
       return;
     }
@@ -81,10 +83,10 @@ export default function ContactForm() {
     try {
       // Use EmailJS to send the email directly from the client
       const result = await emailjs.sendForm(
-        emailjsConfig.serviceId,
-        emailjsConfig.templateId,
+        serviceId,
+        templateId,
         formRef.current!,
-        emailjsConfig.publicKey
+        publicKey
       );
 
       console.log('Email sent successfully!', result.text);
@@ -112,7 +114,6 @@ export default function ContactForm() {
       setIsSubmitting(false)
     }
   }
-
 
   // Animation variants
   const formVariants = {
@@ -145,7 +146,7 @@ export default function ContactForm() {
       whileInView="visible"
       viewport={{ once: true }}
     >
-      {/* Your existing form, but use name attributes that match your EmailJS template */}
+      {/* Form fields */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <motion.div className="space-y-2" variants={itemVariants}>
           <label htmlFor="name" className="text-sm font-medium">
