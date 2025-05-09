@@ -33,49 +33,53 @@ export async function sendContactEmail(formData: {
       }
     }
     
-    // Determine if we're running in development or production
-    const isDevelopment = process.env.NODE_ENV === 'development';
+    // Fix the URL construction to avoid double https://
+    let baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL || 'my-portfolio-sigma-blond-90.vercel.app';
     
-    // Set the base URL with a smart detection system
-    let baseUrl;
-    
-    // Priority order for determining the base URL:
-    if (process.env.VERCEL_URL) {
-      // 1. If we're on Vercel and have VERCEL_URL 
-      baseUrl = `https://${process.env.VERCEL_URL}`;
-    } else if (process.env.NEXT_PUBLIC_VERCEL_URL) {
-      // 2. If we have a manually specified Vercel URL
-      baseUrl = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
-    } else if (isDevelopment) {
-      // 3. If we're in development mode, use localhost
-      baseUrl = 'http://localhost:3000';
+    // Make sure we have a properly formatted URL with https
+    if (baseUrl.startsWith('http')) {
+      // URL already has protocol
     } else {
-      // 4. Fallback to the configured base URL
-      baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+      // Add https:// prefix if missing
+      baseUrl = `https://${baseUrl}`;
     }
     
-    // Remove trailing slash if present
-    const apiBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+    // Remove any trailing slash
+    baseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
     
-    console.log(`Sending email via API. Environment: ${isDevelopment ? 'Development' : 'Production'}, Base URL: ${apiBaseUrl}`);
+    console.log(`Sending email via API. Environment: ${process.env.NODE_ENV || 'production'}, Base URL: ${baseUrl}`);
     
-    // Make the API call to our route handler
-    const response = await fetch(`${apiBaseUrl}/api/send-email`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    });
-    
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(errorText || 'Failed to send email');
+    // Make the API call to our route handler with improved error handling
+    try {
+      const response = await fetch(`${baseUrl}/api/send-email`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      
+      // Get the response as text first for logging purposes
+      const responseText = await response.text();
+      console.log(`API Response status: ${response.status}, body: ${responseText}`);
+      
+      // Parse the response JSON
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch (e) {
+        throw new Error(`Invalid JSON response: ${responseText}`);
+      }
+      
+      if (!response.ok) {
+        throw new Error(data.error || `API error: ${response.status}`);
+      }
+      
+      return data;
+    } catch (fetchError) {
+      console.error("Fetch error:", fetchError);
+      throw fetchError;
     }
-    
-    const data = await response.json();
-    return data; // Should return {success: true}
-    
   } catch (error) {
     console.error("Error sending email:", error)
     return {

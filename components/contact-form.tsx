@@ -1,20 +1,35 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { sendContactEmail } from "@/app/actions"
 import { useToast } from "@/hooks/use-toast"
+import emailjs from '@emailjs/browser';
 
 export default function ContactForm() {
+  const formRef = useRef<HTMLFormElement>(null);
   const { toast } = useToast()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [emailjsConfig, setEmailjsConfig] = useState({
+    serviceId: '',
+    templateId: '',
+    publicKey: ''
+  });
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     subject: "",
     message: "",
   })
+
+  // Load environment variables on component mount
+  useEffect(() => {
+    setEmailjsConfig({
+      serviceId: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || '',
+      templateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || '',
+      publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || ''
+    });
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target
@@ -36,40 +51,70 @@ export default function ContactForm() {
       })
       return
     }
+    
+    if (formData.message.length < 10) {
+      toast({
+        title: "Message too short",
+        description: "Your message must be at least 10 characters long.",
+        variant: "destructive",
+      })
+      return
+    }
+
+    // Check if EmailJS config is loaded
+    if (!emailjsConfig.serviceId || !emailjsConfig.templateId || !emailjsConfig.publicKey) {
+      toast({
+        title: "Configuration error",
+        description: "Email service not properly configured. Please try again later.",
+        variant: "destructive",
+      })
+      console.error("EmailJS config missing:", {
+        hasServiceId: Boolean(emailjsConfig.serviceId),
+        hasTemplateId: Boolean(emailjsConfig.templateId),
+        hasPublicKey: Boolean(emailjsConfig.publicKey),
+      });
+      return;
+    }
 
     setIsSubmitting(true)
 
     try {
-      const result = await sendContactEmail(formData)
+      // Use EmailJS to send the email directly from the client
+      const result = await emailjs.sendForm(
+        emailjsConfig.serviceId,
+        emailjsConfig.templateId,
+        formRef.current!,
+        emailjsConfig.publicKey
+      );
 
-      if (result.success) {
-        toast({
-          title: "Message received!",
-          description: "Thank you for your message. I'll get back to you soon.",
-        })
+      console.log('Email sent successfully!', result.text);
+      
+      toast({
+        title: "Message received!",
+        description: "Thank you for your message. I'll get back to you soon.",
+      })
 
-        // Reset form
-        setFormData({
-          name: "",
-          email: "",
-          subject: "",
-          message: "",
-        })
-      } else {
-        throw new Error(result.error || "Failed to send message")
-      }
+      // Reset form
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      })
     } catch (error) {
+      console.error('Failed to send message:', error);
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Something went wrong. Please try again later.",
+        description: "Failed to send your message. Please try again later.",
         variant: "destructive",
       })
-      console.error("Contact form error:", error)
     } finally {
       setIsSubmitting(false)
     }
   }
 
+
+  // Animation variants
   const formVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -92,6 +137,7 @@ export default function ContactForm() {
 
   return (
     <motion.form
+      ref={formRef}
       className="space-y-4"
       onSubmit={handleSubmit}
       variants={formVariants}
@@ -99,6 +145,7 @@ export default function ContactForm() {
       whileInView="visible"
       viewport={{ once: true }}
     >
+      {/* Your existing form, but use name attributes that match your EmailJS template */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <motion.div className="space-y-2" variants={itemVariants}>
           <label htmlFor="name" className="text-sm font-medium">
@@ -106,6 +153,7 @@ export default function ContactForm() {
           </label>
           <input
             id="name"
+            name="name" 
             type="text"
             className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-700 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
             placeholder="Your name"
@@ -120,6 +168,7 @@ export default function ContactForm() {
           </label>
           <input
             id="email"
+            name="email"
             type="email"
             className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-700 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
             placeholder="Your email"
@@ -135,6 +184,7 @@ export default function ContactForm() {
         </label>
         <input
           id="subject"
+          name="subject"
           type="text"
           className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-700 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
           placeholder="Subject"
@@ -148,15 +198,32 @@ export default function ContactForm() {
         </label>
         <textarea
           id="message"
+          name="message"
           rows={5}
           className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-700 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
-          placeholder="Your message"
+          placeholder="Your message (minimum 10 characters)"
           value={formData.message}
           onChange={handleChange}
           required
         />
+        {formData.message && formData.message.length < 10 && (
+          <p className="text-xs text-red-500">
+            Message must be at least 10 characters long
+          </p>
+        )}
       </motion.div>
       <motion.div variants={itemVariants}>
+        <div id="form-status" className="h-12">
+          {isSubmitting && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="p-3 rounded-md bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+            >
+              Sending your message...
+            </motion.div>
+          )}
+        </div>
         <Button type="submit" className="w-full relative overflow-hidden group" disabled={isSubmitting}>
           <span className="relative z-10">{isSubmitting ? "Sending..." : "Send Message"}</span>
           <motion.span
