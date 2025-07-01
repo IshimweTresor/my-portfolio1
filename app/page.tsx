@@ -17,7 +17,7 @@ export default function Home() {
       <section className="container mx-auto px-4 py-20 md:py-32 flex flex-col md:flex-row items-center gap-8">
         <AnimatedSection direction="left" className="md:w-1/2 space-y-6">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-            Hi, I'm <span className="text-emerald-600 dark:text-emerald-500">Felix Niyonteze</span>
+            Hi, I'm <span className="text-emerald-600 dark:text-emerald-500">Ishimwe Tresor</span>
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300">
             Full-stack developer specializing in web and mobile applications with expertise in Flutter, React, Django,
@@ -31,7 +31,7 @@ export default function Home() {
             </AnimatedSection>
             <AnimatedSection delay={0.3}>
               <Button variant="outline" asChild>
-                <Link href="https://github.com/nifelix97" target="_blank" className="flex items-center gap-2">
+                <Link href="https://github.com/IshimweTresor" target="_blank" className="flex items-center gap-2">
                   <Github size={18} /> GitHub
                 </Link>
               </Button>
@@ -40,7 +40,7 @@ export default function Home() {
         </AnimatedSection>
         <AnimatedSection direction="right" delay={0.2} className="md:w-1/2 flex justify-center">
           <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-emerald-500 shadow-xl">
-            <Image src="/images/profile.jpeg" alt="Felix Niyonteze" fill className="object-cover" priority />
+            <Image src="/images/profile.jpg" alt="Ishimwe Tresor" fill className="object-cover" priority />
           </div>
         </AnimatedSection>
       </section>
@@ -52,21 +52,21 @@ export default function Home() {
           <AnimatedSection direction="left" className="space-y-6">
             <h3 className="text-2xl font-semibold">Background</h3>
             <p className="text-gray-600 dark:text-gray-300">
-              I'm a final year IT student at the University of Rwanda with a passion for building innovative web and
+              I'm a graduate in Information system student at the University of Rwanda with a passion for building innovative web and
               mobile applications. I've gained practical experience through internships and personal projects, focusing
               on creating user-friendly and efficient solutions.
             </p>
             <h3 className="text-2xl font-semibold">Education</h3>
             <div className="space-y-2">
               <p className="font-medium">University of Rwanda</p>
-              <p className="text-gray-600 dark:text-gray-300">Bachelor's Degree in Information Technology</p>
-              <p className="text-sm text-gray-500">Expected Graduation: 2025</p>
+              <p className="text-gray-600 dark:text-gray-300">Bachelor's Degree in Information Systems</p>
+              <p className="text-sm text-gray-500">Graduation: 2025</p>
             </div>
             <h3 className="text-2xl font-semibold">Experience</h3>
             <div className="space-y-2">
-              <p className="font-medium">Feli Technology</p>
+              <p className="font-medium">Innovative vas</p>
               <p className="text-gray-600 dark:text-gray-300">Internship - Mobile App Developer</p>
-              <p className="text-sm text-gray-500">Developed Feli Express e-commerce mobile app using Flutter</p>
+              <p className="text-sm text-gray-500">Developed Cognative disability mobile app using Flutter</p>
             </div>
           </AnimatedSection>
           <AnimatedSection direction="right" delay={0.2}>
@@ -110,7 +110,7 @@ export default function Home() {
                 image="/images/nexa-tech.png"
                 tags={["Next.js", "React", "Tailwind CSS"]}
                 liveLink="https://nexa-tech-hub.vercel.app/"
-                githubLink="https://github.com/nifelix97"
+                githubLink="https://github.com/IshimweTresor"
                 delay={0.1}
               />
 
@@ -120,7 +120,7 @@ export default function Home() {
                 image="/images/tunganawe.png"
                 tags={["React", "Node.js", "Express"]}
                 liveLink="https://tunganawe.com"
-                githubLink="https://github.com/nifelix97"
+                githubLink="https://github.com/IshimweTresor"
                 delay={0.2}
               />
 
@@ -129,7 +129,7 @@ export default function Home() {
                 description="Blood Transfusion Management application that connects donors with recipients. My final year project focused on improving the blood donation process and saving lives."
                 image="/images/btd-app.png"
                 tags={["Flutter", "Dart", "Firebase"]}
-                githubLink="https://github.com/nifelix97"
+                githubLink="https://github.com/IshimweTresor"
                 delay={0.3}
               />
             </div>
@@ -143,7 +143,7 @@ export default function Home() {
                 image="/images/nexa-tech.png"
                 tags={["Next.js", "React", "Tailwind CSS"]}
                 liveLink="https://nexa-tech-hub.vercel.app/"
-                githubLink="https://github.com/nifelix97"
+                githubLink="https://github.com/IshimweTresor"
                 delay={0.1}
               />
 
@@ -153,7 +153,7 @@ export default function Home() {
                 image="/images/tunganawe.png"
                 tags={["React", "Node.js", "Express"]}
                 liveLink="https://tunganawe.com"
-                githubLink="https://github.com/nifelix97"
+                githubLink="https://github.com/IshimweTresor"
                 delay={0.2}
               />
 
@@ -162,7 +162,7 @@ export default function Home() {
                 description="Blood Transfusion Management application that connects donors with recipients. My final year project focused on improving the blood donation process and saving lives."
                 image="/images/btd-app.png"
                 tags={["Flutter", "Dart", "Firebase"]}
-                githubLink="https://github.com/nifelix97"
+                githubLink="https://github.com/IshimweTresor"
                 delay={0.3}
               />
 
@@ -171,7 +171,7 @@ export default function Home() {
                 description="E-commerce mobile application with 'Discover | Click | Receive' functionality developed during my internship at Feli Technology. Features a clean, modern interface with easy navigation."
                 image="/images/feli-express.png"
                 tags={["Flutter", "Dart", "REST API"]}
-                githubLink="https://github.com/nifelix97"
+                githubLink="https://github.com/IshimweTresor"
                 delay={0.4}
               />
             </div>
@@ -190,7 +190,7 @@ export default function Home() {
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-2xl font-semibold">Recent Repositories</h3>
               <Button variant="outline" asChild>
-                <Link href="https://github.com/nifelix97" target="_blank" className="flex items-center gap-2">
+                <Link href="https://github.com/IshimweTresor" target="_blank" className="flex items-center gap-2">
                   <Github size={18} /> View Profile
                 </Link>
               </Button>
@@ -238,21 +238,21 @@ export default function Home() {
               <AnimatedSection delay={0.1} className="flex items-center gap-3">
                 <Mail className="text-emerald-600 dark:text-emerald-500" />
                 <a
-                  href="mailto:nifelix97@gmail.com"
+                  href="mailto:ishimwet15@gmail.com"
                   className="hover:text-emerald-600 dark:hover:text-emerald-500 transition-colors"
                 >
-                  nifelix97@gmail.com
+                ishimwet15@gmail.com
                 </a>
               </AnimatedSection>
               <AnimatedSection delay={0.2} className="flex items-center gap-3">
                 <Github className="text-emerald-600 dark:text-emerald-500" />
                 <a
-                  href="https://github.com/nifelix97"
+                  href="https://github.com/IshimweTresor"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-emerald-600 dark:hover:text-emerald-500 transition-colors"
                 >
-                  github.com/nifelix97
+                  https://github.com/IshimweTresor
                 </a>
               </AnimatedSection>
             </div>
@@ -267,7 +267,7 @@ export default function Home() {
       <footer className="bg-gray-100 dark:bg-gray-900 py-8">
         <div className="container mx-auto px-4 text-center">
           <p className="text-gray-600 dark:text-gray-300">
-            © {new Date().getFullYear()} Felix Niyonteze. All rights reserved.
+            © {new Date().getFullYear()} Ishimwe Tresor. All rights reserved.
           </p>
         </div>
       </footer>
@@ -330,7 +330,7 @@ function GitHubRepo({ name, description, language, stars, forks }: { name: strin
           <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{description}</p>
         </div>
         <Button variant="ghost" size="sm" asChild>
-          <Link href={`https://github.com/nifelix97/${name}`} target="_blank">
+          <Link href={`https://github.com/IshimweTresor/${name}`} target="_blank">
             <Github size={16} />
           </Link>
         </Button>
@@ -402,7 +402,7 @@ function AnimatedGitHubRepo({ name, description, language, stars, forks, delay =
             <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{description}</p>
           </div>
           <Button variant="ghost" size="sm" asChild>
-            <Link href={`https://github.com/nifelix97/${name}`} target="_blank">
+            <Link href={`https://github.com/IshimweTresor/${name}`} target="_blank">
               <Github size={16} />
             </Link>
           </Button>

@@ -9,8 +9,8 @@ import { Toaster } from "@/components/ui/toaster"  // Add this import
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Felix Niyonteze | Full-Stack Developer",
-  description: "Portfolio of Felix Niyonteze, a full-stack developer specializing in web and mobile applications.",
+  title: "Ishimwe Tresor | Full-Stack Developer",
+  description: "Portfolio of Ishimwe Tresor, a full-stack developer specializing in web and mobile applications.",
   generator: 'v0.dev'
 }
 
@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={inter.className} suppressHydrationWarning>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <Navbar />
           {children}

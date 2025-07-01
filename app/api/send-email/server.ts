@@ -17,9 +17,9 @@ export async function sendContactEmail(formData: {
 
     // Create email content
     const emailContent = {
-      to: "nifelix97@gmail.com",
+      to: "ishimwet15@gmail.com",
       subject: `Portfolio Contact: ${formData.subject || "New message from your portfolio"}`,
-      from: "nifelix97@gmail.com",
+      from: "ishimwet15@gmail.com",
       replyTo: formData.email,
       text: `
         Name: ${formData.name}

@@ -82,7 +82,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
             <Link href="/" className="font-bold text-xl text-emerald-600 dark:text-emerald-500">
-              Felix Niyonteze
+              Ishimwe Tresor
             </Link>
           </motion.div>
 
@@ -119,7 +119,7 @@ export default function Navbar() {
               </Button>
               <Button variant="outline" size="sm" asChild>
                 <Link
-                  href="https://github.com/nifelix97"
+                  href="https://github.com/IshimweTresor"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-1"
@@ -177,7 +177,7 @@ export default function Navbar() {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
               <Button variant="outline" size="sm" asChild className="w-full mt-4">
                 <Link
-                  href="https://github.com/nifelix97"
+                  href="https://github.com/IshimweTresor"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2"
